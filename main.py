@@ -27,15 +27,11 @@ NS = 120
 UPDATES_PER_STEP = NS * 4
 
 # Full parameter sweep
-NORMALIZING_FACTORS = np.round(
-    np.arange(0.2000, 0.0000, -0.005), 2
-).tolist()
+NORMALIZING_FACTORS = np.arange(0.5000, 0.0000, -0.005).tolist()
 
 # 0.1546
 
-H_B_VALUES = np.round(
-    np.arange(0.10, 0.0000, -0.005), 2
-).tolist()
+H_B_VALUES = np.arange(0.50, 0.0000, -0.005).tolist()
 
 # 0.0122
 
@@ -43,7 +39,7 @@ V_VALUES = [0.5]
 
 BETA_VALUES = [400]
 
-Small parameter sweep for testing
+# Small parameter sweep for testing
 
 # NORMALIZING_FACTORS = [0.20, 0.15]
 
