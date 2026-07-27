@@ -26,12 +26,19 @@ from datetime import datetime
 NS = 120
 UPDATES_PER_STEP = NS * 4
 
+# # Full parameter sweep
+# NORMALIZING_FACTORS = np.arange(0.5000, 0.0000, -0.05).tolist()
+
+# # 0.1546
+
+# H_B_VALUES = np.arange(0.5000, 0.0000, -0.05).tolist()
+
 # Full parameter sweep
 NORMALIZING_FACTORS = np.arange(0.5000, 0.0000, -0.005).tolist()
 
 # 0.1546
 
-H_B_VALUES = np.arange(0.50, 0.0000, -0.005).tolist()
+H_B_VALUES = np.arange(0.5000, 0.0000, -0.005).tolist()
 
 # 0.0122
 
@@ -1595,32 +1602,6 @@ def run_study(
         f"Configuration             : "
         f"{config_path}"
     )
-    
-    # -------------------------------------------------------------------------
-    # End timing
-    # -------------------------------------------------------------------------
-
-    end_time = datetime.now()
-    elapsed = end_time - start_time
-
-    print()
-    print("=" * 70)
-    print("TIMING")
-    print("=" * 70)
-    print(f"Start Time : {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
-    print(f"End Time   : {end_time.strftime('%Y-%m-%d %H:%M:%S')}")
-
-    days = elapsed.days
-    hours, remainder = divmod(elapsed.seconds, 3600)
-    minutes, seconds = divmod(remainder, 60)
-
-    print(
-        f"Elapsed    : "
-        f"{days}d "
-        f"{hours:02d}h "
-        f"{minutes:02d}m "
-        f"{seconds:02d}s"
-    )
 
     # -------------------------------------------------------------------------
     # Resume/checkpoint paths
@@ -1843,6 +1824,34 @@ def run_study(
         f"Configuration : "
         f"{config_path}"
     )
+
+        
+    # -------------------------------------------------------------------------
+    # End timing
+    # -------------------------------------------------------------------------
+
+    end_time = datetime.now()
+    elapsed = end_time - start_time
+
+    print()
+    print("=" * 70)
+    print("TIMING")
+    print("=" * 70)
+    print(f"Start Time : {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"End Time   : {end_time.strftime('%Y-%m-%d %H:%M:%S')}")
+
+    days = elapsed.days
+    hours, remainder = divmod(elapsed.seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+
+    print(
+        f"Elapsed    : "
+        f"{days}d "
+        f"{hours:02d}h "
+        f"{minutes:02d}m "
+        f"{seconds:02d}s"
+    )
+
 
 
 # =============================================================================

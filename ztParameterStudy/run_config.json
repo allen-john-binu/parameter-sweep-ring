@@ -1,17 +1,33 @@
 {
-    "input_file": "/Users/allenjohnbinu/Desktop/parameterSweep/data.csv",
+    "input_file": "/home/uni-konstanz/Desktop/allenJohnBinu/parameter-sweep-ring/data.csv",
     "db_filter": "dB_SPL > 80.0",
     "db_threshold": 80.0,
     "n_retained_doa_timesteps": 185,
     "Ns": 120,
     "updates_per_step": 480,
     "normalizing_factors": [
-        0.2,
-        0.15
+        0.5,
+        0.45,
+        0.4,
+        0.35000000000000003,
+        0.30000000000000004,
+        0.25000000000000006,
+        0.20000000000000007,
+        0.15000000000000008,
+        0.10000000000000009,
+        0.0500000000000001
     ],
     "h_b_values": [
-        0.1,
-        0.05
+        0.5,
+        0.45,
+        0.4,
+        0.35000000000000003,
+        0.30000000000000004,
+        0.25000000000000006,
+        0.20000000000000007,
+        0.15000000000000008,
+        0.10000000000000009,
+        0.0500000000000001
     ],
     "v_values": [
         0.5
@@ -75,8 +91,8 @@
     ],
     "zero_gap_tolerance": 2,
     "parallel_workers": 8,
-    "total_parameter_combinations": 4,
-    "total_complete_ring_runs": 200,
+    "total_parameter_combinations": 100,
+    "total_complete_ring_runs": 5000,
     "implementation": "NumPy + multiprocessing, no Numba",
     "interaction_optimization": "incrementally maintained J @ spins interaction field"
 }
