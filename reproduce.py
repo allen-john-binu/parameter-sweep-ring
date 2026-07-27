@@ -7,15 +7,15 @@ import numpy as np
 # HARDCODED CONFIGURATION
 # =============================================================================
 
-INPUT_CSV = "../ztLabCollection/ztProcessData/expAA1.csv"
-SEEDS_FILE = "./ztParameterStudy3/seeds.txt"
-OUTPUT_CSV = "./ztParameterStudy3/pin_history.csv"
+INPUT_CSV = "./data.csv"
+SEEDS_FILE = "./ztParameterStudy/seeds.txt"
+OUTPUT_CSV = "./ztParameterStudy/spin_history1.csv"
 
 DB_THRESHOLD = 80.0
 
 # Chosen parameter set from parameter study
-NORMALIZING_FACTOR = 0.1546   # <-- change
-H_B = 0.0122               # <-- change
+NORMALIZING_FACTOR = 0.15   # <-- change
+H_B = 0.01              # <-- change
 V = 0.5                     # <-- change
 BETA = 400                  # <-- change
 
@@ -24,6 +24,15 @@ UPDATES_PER_STEP = NS * 4
 
 EXPECTED_N_SEEDS = 50
 
+# NORMALIZING_FACTORS = [0.20, 0.15]
+
+# H_B_VALUES = [0.10, 0.05]
+
+# V_VALUES = [0.5]
+
+# BETA_VALUES = [400]
+
+# N_SEEDS = 3
 
 # =============================================================================
 # LOAD EXACT SAVED SEEDS

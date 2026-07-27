@@ -28,16 +28,32 @@ UPDATES_PER_STEP = NS * 4
 
 # Full parameter sweep
 NORMALIZING_FACTORS = np.round(
-    np.arange(1.00, 0.049, -0.05), 2
+    np.arange(0.2000, 0.0000, -0.005), 2
 ).tolist()
 
+# 0.1546
+
 H_B_VALUES = np.round(
-    np.arange(1.00, 0.049, -0.05), 2
+    np.arange(0.10, 0.0000, -0.005), 2
 ).tolist()
+
+# 0.0122
 
 V_VALUES = [0.5]
 
 BETA_VALUES = [400]
+
+Small parameter sweep for testing
+
+# NORMALIZING_FACTORS = [0.20, 0.15]
+
+# H_B_VALUES = [0.10, 0.05]
+
+# V_VALUES = [0.5]
+
+# BETA_VALUES = [400]
+
+# N_SEEDS = 3
 
 # # Full parameter sweep
 # NORMALIZING_FACTORS = np.round(
@@ -732,6 +748,8 @@ def run_single_seed(
     total_number_of_detected_bumps = 0
 
     total_largest_bump_width = 0
+    
+    total_zero_bump_timesteps = 0
 
     # =========================================================================
     # Process complete DOA sequence
@@ -911,6 +929,9 @@ def run_single_seed(
         ) = calculate_bump_metrics(
             spins
         )
+        
+        if n_bumps == 0:
+            total_zero_bump_timesteps += 1  
 
         total_bump_count += (
             n_bumps
@@ -941,6 +962,7 @@ def run_single_seed(
         total_all_bump_widths,
         total_number_of_detected_bumps,
         total_largest_bump_width,
+        total_zero_bump_timesteps,
     )
 
 
@@ -1004,6 +1026,8 @@ def run_parameter_combination(
     grand_number_of_detected_bumps = 0
 
     grand_largest_bump_width = 0
+    
+    grand_zero_bump_timesteps = 0
 
     for seed in seeds:
 
@@ -1013,6 +1037,7 @@ def run_parameter_combination(
             total_all_bump_widths,
             total_number_of_detected_bumps,
             total_largest_bump_width,
+            total_zero_bump_timesteps,
         ) = run_single_seed(
             doa_base=doa_base,
             kernel=kernel,
@@ -1041,6 +1066,8 @@ def run_parameter_combination(
         grand_largest_bump_width += (
             total_largest_bump_width
         )
+        
+        grand_zero_bump_timesteps += total_zero_bump_timesteps
 
     # -------------------------------------------------------------------------
     # Average state-level metrics
@@ -1068,6 +1095,10 @@ def run_parameter_combination(
     avg_largest_bump_width = (
         grand_largest_bump_width
         / total_states
+    )
+    
+    avg_zero_bump_timestep_percentage = (
+        100.0 * grand_zero_bump_timesteps / total_states
     )
 
     # -------------------------------------------------------------------------
@@ -1101,6 +1132,7 @@ def run_parameter_combination(
         avg_total_active_neurons,
         avg_bump_width,
         avg_largest_bump_width,
+        avg_zero_bump_timestep_percentage,
     )
 
 
@@ -1117,6 +1149,7 @@ RESULT_HEADER = [
     "avg_total_active_neurons",
     "avg_bump_width",
     "avg_largest_bump_width",
+    "avg_zero_bump_timestep_percentage",
 ]
 
 
@@ -1776,7 +1809,8 @@ def run_study(
                 f"bumps={result[4]:.4f} | "
                 f"active={result[5]:.4f} | "
                 f"width={result[6]:.4f} | "
-                f"largest={result[7]:.4f}",
+                f"largest={result[7]:.4f} | "
+                f"zero={result[8]:.2f}%",
                 flush=True
             )
 
