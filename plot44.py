@@ -45,6 +45,41 @@ REQUIRED_COLUMNS = [
 # HELPER FUNCTIONS
 # =============================================================================
 
+def set_sparse_ticks(ax, x_values, y_values, max_ticks=8):
+    """
+    Show at most `max_ticks` tick labels per axis.
+    """
+
+    def make_ticks(values):
+        n = len(values)
+
+        if n <= max_ticks:
+            indices = np.arange(n)
+        else:
+            indices = np.linspace(
+                0,
+                n - 1,
+                max_ticks,
+                dtype=int,
+            )
+            indices = np.unique(indices)
+
+        labels = [f"{values[i]:g}" for i in indices]
+        return indices, labels
+
+    x_idx, x_labels = make_ticks(x_values)
+    y_idx, y_labels = make_ticks(y_values)
+
+    ax.set_xticks(x_idx)
+    ax.set_xticklabels(
+        x_labels,
+        rotation=45,
+        ha="right",
+    )
+
+    ax.set_yticks(y_idx)
+    ax.set_yticklabels(y_labels)
+
 def format_parameter_for_filename(value):
     """
     Convert a parameter value into a clean, filename-safe string.
@@ -251,45 +286,12 @@ def plot_single_parameter_pair(
             fontsize=11,
         )
 
-        # ---------------------------------------------------------------------
-        # Axis tick positions
-        # ---------------------------------------------------------------------
-
-        ax.set_xticks(
-            np.arange(
-                len(x_values)
-            )
-        )
-
-        ax.set_yticks(
-            np.arange(
-                len(y_values)
-            )
-        )
-
-        # ---------------------------------------------------------------------
-        # Axis tick labels
-        #
-        # Use general numeric formatting instead of fixed .2f so arbitrary
-        # parameter precision is preserved.
-        # ---------------------------------------------------------------------
-
-        ax.set_xticklabels(
-            [
-                f"{x:g}"
-                for x in x_values
-            ],
-            rotation=45,
-            ha="right",
-        )
-
-        ax.set_yticklabels(
-            [
-                f"{y:g}"
-                for y in y_values
-            ]
-        )
-
+        set_sparse_ticks(
+            ax,
+            x_values,
+            y_values,
+            max_ticks=8,   # change to 6, 10, etc.
+        )    
         # ---------------------------------------------------------------------
         # Labels
         # ---------------------------------------------------------------------
@@ -759,6 +761,7 @@ if __name__ == "__main__":
     )
     
     
-    # python plot44.py \
-    # --input ./ztParameterStudy1/parameter_study_results.csv \
-    # --output-dir ./ztParameterStudy1/parameter_study_pdfs
+    # python3 plot44.py --input ./ztParameterStudy/parameter_study_results.csv --output-dir ./ztParameterStudy/parameter_study_pdfs
+        # python3 plot44.py --input ./ztParameterStudy2/parameter_study_results.csv --output-dir ./ztParameterStudy2/parameter_study_pdfs
+            # python3 plot44.py --input ./ztParameterStudySample/parameter_study_results.csv --output-dir ./ztParameterStudySample/parameter_study_pdfs
+                # python3 plot44.py --input ./ztLogParameterStudy/parameter_study_results.csv --output-dir ./ztLogParameterStudy/parameter_study_pdfs

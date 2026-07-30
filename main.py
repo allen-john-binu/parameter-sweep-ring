@@ -34,27 +34,27 @@ UPDATES_PER_STEP = NS * 4
 # H_B_VALUES = np.arange(0.5000, 0.0000, -0.05).tolist()
 
 # Full parameter sweep
-# NORMALIZING_FACTORS = np.arange(0.5000, 0.0000, -0.005).tolist()
+NORMALIZING_FACTORS = np.arange(0.5000, 0.0000, -0.005).tolist()
 
-# # 0.1546
+# 0.1546
 
-# H_B_VALUES = np.arange(0.5000, 0.0000, -0.005).tolist()
+H_B_VALUES = np.arange(0.2000, 0.0000, -0.005).tolist()
 
-# # 0.0122
-
-# V_VALUES = [0.5]
-
-# BETA_VALUES = [400]
-
-# Small parameter sweep for testing
-
-NORMALIZING_FACTORS = [0.1546]
-
-H_B_VALUES = [0.0122]
+# 0.0122
 
 V_VALUES = [0.5]
 
 BETA_VALUES = [400]
+
+# Small parameter sweep for testing
+
+# NORMALIZING_FACTORS = [0.1546]
+
+# H_B_VALUES = [0.0122]
+
+# V_VALUES = [0.5]
+
+# BETA_VALUES = [400]
 
 # N_SEEDS = 3
 
