@@ -16,8 +16,8 @@ from datetime import datetime
 # CONFIGURATION
 # =============================================================================
 
-# python3 main.py \
-#     --input ../ztLabCollection/ztProcessData/expAA1.csv \
+# python3 mainWithLogNorm.py \
+#     --input ./data.csv \
 #     --output-dir ./ztParameterStudy \
 #     --db-threshold 80 \
 #     --workers 8
@@ -217,15 +217,11 @@ def load_and_normalize_doa(input_path, db_threshold):
         dtype=np.float64
     )
 
-    global_min = float(
-        np.min(all_values)
-    )
+    global_min = 0.0
+    global_max = 4.64582928438491e-05   # 99.5th percentile
 
-    global_max = float(
-        np.max(all_values)
-    )
-
-    denom = global_max - global_min
+    # Precompute denominator once
+    log_denom = np.log1p(global_max)
 
     doa_base = np.zeros(
         (len(raw_rows), NS),
@@ -234,21 +230,14 @@ def load_and_normalize_doa(input_path, db_threshold):
 
     for t, arr in enumerate(raw_rows):
 
-        # Preserve original behavior:
-        #
-        # if v == 0:
-        #     normalized value = 0
-        #
-        # Therefore artificial zero-filled ring positions
-        # remain exactly zero.
-
         nonzero = arr != 0.0
 
-        if denom != 0.0:
+        # Clip values above the chosen global maximum
+        clipped = np.minimum(arr[nonzero], global_max)
 
-            doa_base[t, nonzero] = (
-                arr[nonzero] - global_min
-            ) / denom
+        doa_base[t, nonzero] = (
+            np.log1p(clipped) / log_denom
+        )
 
     print()
     print("=" * 70)

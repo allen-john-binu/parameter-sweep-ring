@@ -24,8 +24,8 @@ METRICS = [
         "Average Bump Width",
     ),
     (
-        "avg_largest_bump_width",
-        "Average Largest Bump Width",
+        "avg_zero_bump_timestep_percentage",
+        "Average Zero-Bump Timesteps (%)",
     ),
 ]
 
@@ -37,7 +37,7 @@ REQUIRED_COLUMNS = [
     "avg_number_of_bumps",
     "avg_total_active_neurons",
     "avg_bump_width",
-    "avg_largest_bump_width",
+    "avg_zero_bump_timestep_percentage",
 ]
 
 
@@ -145,6 +145,8 @@ def plot_single_parameter_pair(
         Fixed globally for each metric across the entire CSV.
     """
 
+    n_metrics = len(METRICS)
+
     fig, axes = plt.subplots(
         2,
         2,
@@ -152,7 +154,7 @@ def plot_single_parameter_pair(
         constrained_layout=True,
     )
 
-    axes = axes.flatten()
+    axes = np.atleast_1d(axes).flatten()
 
     for ax, (metric, title) in zip(
         axes,
