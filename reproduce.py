@@ -8,8 +8,8 @@ import numpy as np
 # =============================================================================
 
 INPUT_CSV = "./data.csv"
-SEEDS_FILE = "./ztParameterStudySample/seeds.txt"
-OUTPUT_CSV = "./ztParameterStudySample/spin_history1.csv"
+SEEDS_FILE = "./ztParameterStudySample2/seeds.txt"
+OUTPUT_CSV = "./ztParameterStudySample2/spin_history1.csv"
 
 DB_THRESHOLD = 80.0
 

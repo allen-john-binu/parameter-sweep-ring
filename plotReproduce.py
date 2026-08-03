@@ -8,8 +8,8 @@ from matplotlib.backends.backend_pdf import PdfPages
 # CONFIGURATION
 # =============================================================================
 
-INPUT_CSV = "./ztParameterStudy/spin_history1.csv"
-OUTPUT_PDF = "./ztParameterStudy/spin_history_all_runs1.pdf"
+INPUT_CSV = "./ztParameterStudySample2/spin_history1.csv"
+OUTPUT_PDF = "./ztParameterStudySample2/spin_history_all_runs1.pdf"
 
 SPINS_PER_RUN = 120
 RUNS_PER_PAGE = 2

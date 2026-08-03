@@ -183,11 +183,13 @@ def plot_single_parameter_pair(
     n_metrics = len(METRICS)
 
     fig, axes = plt.subplots(
+        3,
         2,
-        2,
-        figsize=(16, 13),
+        figsize=(16, 18),
         constrained_layout=True,
     )
+
+    axes = axes.flatten()
 
     axes = np.atleast_1d(axes).flatten()
 
@@ -263,11 +265,15 @@ def plot_single_parameter_pair(
         # Heatmap
         # ---------------------------------------------------------------------
 
+        # Use an inverted colormap for the zero-bump percentage metric
+        cmap = "viridis_r" if metric == "avg_zero_bump_timestep_percentage" else "viridis"
+
         image = ax.imshow(
             data,
             origin="lower",
             aspect="auto",
             interpolation="nearest",
+            cmap=cmap,
             vmin=vmin,
             vmax=vmax,
         )
@@ -311,6 +317,60 @@ def plot_single_parameter_pair(
             fontsize=14,
             fontweight="bold",
         )
+        
+    # -------------------------------------------------------------------------
+    # Plot 5: Exact zero-bump parameter combinations
+    # -------------------------------------------------------------------------
+
+    ax = axes[4]
+
+    zero_map = subset.pivot_table(
+        index="h_b",
+        columns="normalizing_factor",
+        values="avg_zero_bump_timestep_percentage",
+        aggfunc="mean",
+    )
+
+    zero_map = zero_map.sort_index().sort_index(axis=1)
+
+    x_values = zero_map.columns.to_numpy()
+    y_values = zero_map.index.to_numpy()
+
+    # Plot only exact zeros
+    mask = np.isclose(zero_map.to_numpy(dtype=float), 0.0)
+
+    rows, cols = np.where(mask)
+
+    # Blank background
+    ax.imshow(
+        np.zeros_like(mask, dtype=float),
+        origin="lower",
+        aspect="auto",
+        cmap="Greys",
+        vmin=0,
+        vmax=1,
+    )
+
+    # Red markers where zero-bump percentage is exactly zero
+    ax.scatter(
+        cols,
+        rows,
+        color="red",
+        s=120,
+        marker="o",
+        edgecolors="black",
+        linewidths=0.8,
+    )
+
+    set_sparse_ticks(ax, x_values, y_values)
+
+    ax.set_xlabel("NORMALIZING_FACTOR")
+    ax.set_ylabel("h_b")
+    ax.set_title(
+        "Exact 0% Zero-Bump Timesteps",
+        fontsize=14,
+        fontweight="bold",
+    )
 
     # -------------------------------------------------------------------------
     # Main title
