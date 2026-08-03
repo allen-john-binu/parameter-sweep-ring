@@ -7,16 +7,16 @@ import numpy as np
 # HARDCODED CONFIGURATION
 # =============================================================================
 
-INPUT_CSV = "./data.csv"
-SEEDS_FILE = "./ztParameterStudySample2/seeds.txt"
-OUTPUT_CSV = "./ztParameterStudySample2/spin_history1.csv"
+INPUT_CSV = "./dataSymmetry.csv"
+SEEDS_FILE = "./ztParameterStudySample3/seeds.txt"
+OUTPUT_CSV = "./ztParameterStudySample3/spin_history2.csv"
 
 DB_THRESHOLD = 80.0
 
 # Chosen parameter set from parameter study
 NORMALIZING_FACTOR = 0.1546   # <-- change
 H_B = 0.0122             # <-- change
-V = 0.5                     # <-- change
+V = 0.3                     # <-- change
 BETA = 400                  # <-- change
 
 NS = 120
@@ -71,9 +71,7 @@ def load_and_normalize_doa(input_path, db_threshold):
         reader = csv.reader(f)
         header = next(reader)
 
-        robot_x_idx = header.index("robot_x")
-
-        doa_headers = header[2:robot_x_idx]
+        doa_headers = header[2:]
 
         csv_angles = [
             int(float(angle))
@@ -96,7 +94,7 @@ def load_and_normalize_doa(input_path, db_threshold):
             values = np.asarray(
                 [
                     float(x)
-                    for x in row[2:robot_x_idx]
+                    for x in row[2:]
                 ],
                 dtype=np.float64
             )
