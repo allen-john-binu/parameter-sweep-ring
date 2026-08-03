@@ -71,7 +71,7 @@
         1927014945,
         1542045141
     ],
-    "zero_gap_tolerance": 2,
+    "zero_gap_tolerance": 5,
     "parallel_workers": 8,
     "total_parameter_combinations": 1,
     "total_complete_ring_runs": 50,

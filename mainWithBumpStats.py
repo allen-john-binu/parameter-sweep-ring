@@ -34,27 +34,27 @@ UPDATES_PER_STEP = NS * 4
 # H_B_VALUES = np.arange(0.5000, 0.0000, -0.05).tolist()
 
 # Full parameter sweep
-NORMALIZING_FACTORS = np.arange(0.5000, 0.0000, -0.005).tolist()
+# NORMALIZING_FACTORS = np.arange(0.5000, 0.0000, -0.005).tolist()
 
-# 0.1546
+# # 0.1546
 
-H_B_VALUES = np.arange(0.2000, 0.0000, -0.005).tolist()
+# H_B_VALUES = np.arange(0.2000, 0.0000, -0.005).tolist()
 
-# 0.0122
+# # 0.0122
 
-V_VALUES = [0.4]
+# V_VALUES = [0.4]
 
-BETA_VALUES = [400]
+# BETA_VALUES = [400]
 
 # Small parameter sweep for testing
 
-# NORMALIZING_FACTORS = [0.1546]
+NORMALIZING_FACTORS = [0.1546]
 
-# H_B_VALUES = [0.0122]
+H_B_VALUES = [0.0122]
 
-# V_VALUES = [0.5]
+V_VALUES = [0.5]
 
-# BETA_VALUES = [400]
+BETA_VALUES = [400]
 
 # N_SEEDS = 3
 
@@ -82,7 +82,7 @@ MASTER_SEED = 100
 
 # Gaps of 1 or 2 zeros are tolerated inside a bump.
 # Gaps of >= 3 zeros separate bumps.
-ZERO_GAP_TOLERANCE = 2
+ZERO_GAP_TOLERANCE = 5
 
 
 # =============================================================================
@@ -790,6 +790,8 @@ def run_single_seed(
     total_largest_bump_width = 0
     
     total_zero_bump_timesteps = 0
+    total_one_bump_timesteps = 0
+    total_two_bump_timesteps = 0
 
     # =========================================================================
     # Process complete DOA sequence
@@ -973,7 +975,11 @@ def run_single_seed(
         bump_angles[t] = calculate_bump_angle(spins)
         
         if n_bumps == 0:
-            total_zero_bump_timesteps += 1  
+            total_zero_bump_timesteps += 1
+        elif n_bumps == 1:
+            total_one_bump_timesteps += 1
+        elif n_bumps == 2:
+            total_two_bump_timesteps += 1
 
         total_bump_count += (
             n_bumps
@@ -1005,6 +1011,8 @@ def run_single_seed(
         total_number_of_detected_bumps,
         total_largest_bump_width,
         total_zero_bump_timesteps,
+        total_one_bump_timesteps,
+        total_two_bump_timesteps,
         bump_angles,
     )
 
@@ -1071,6 +1079,8 @@ def run_parameter_combination(
     grand_largest_bump_width = 0
     
     grand_zero_bump_timesteps = 0
+    grand_one_bump_timesteps = 0
+    grand_two_bump_timesteps = 0
     
     grand_bump_angles = np.zeros(
         n_timesteps,
@@ -1086,6 +1096,8 @@ def run_parameter_combination(
             total_number_of_detected_bumps,
             total_largest_bump_width,
             total_zero_bump_timesteps,
+            total_one_bump_timesteps,
+            total_two_bump_timesteps,
             bump_angles,
         ) = run_single_seed(
             doa_base=doa_base,
@@ -1119,6 +1131,8 @@ def run_parameter_combination(
         )
         
         grand_zero_bump_timesteps += total_zero_bump_timesteps
+        grand_one_bump_timesteps += total_one_bump_timesteps
+        grand_two_bump_timesteps += total_two_bump_timesteps
 
     # -------------------------------------------------------------------------
     # Average state-level metrics
@@ -1150,6 +1164,14 @@ def run_parameter_combination(
     
     avg_zero_bump_timestep_percentage = (
         100.0 * grand_zero_bump_timesteps / total_states
+    )
+
+    avg_one_bump_timestep_percentage = (
+        100.0 * grand_one_bump_timesteps / total_states
+    )
+
+    avg_two_bump_timestep_percentage = (
+        100.0 * grand_two_bump_timesteps / total_states
     )
     
     avg_bump_angles = grand_bump_angles / n_seeds
@@ -1186,6 +1208,8 @@ def run_parameter_combination(
         avg_bump_width,
         avg_largest_bump_width,
         avg_zero_bump_timestep_percentage,
+        avg_one_bump_timestep_percentage,
+        avg_two_bump_timestep_percentage,
         *avg_bump_angles.tolist(),
     )
 
@@ -1205,6 +1229,8 @@ def make_result_header(n_timesteps):
         "avg_bump_width",
         "avg_largest_bump_width",
         "avg_zero_bump_timestep_percentage",
+        "avg_one_bump_timestep_percentage",
+        "avg_two_bump_timestep_percentage",
         *[
             f"time{i}_bumpangle"
             for i in range(1, n_timesteps + 1)
@@ -1708,7 +1734,8 @@ def run_study(
     # -------------------------------------------------------------------------
     # Already complete?
     # -------------------------------------------------------------------------
-
+            
+    result_header = make_result_header(doa_base.shape[0])
     if not pending_tasks:
 
         sort_checkpoint_to_final(
@@ -1849,7 +1876,9 @@ def run_study(
                 f"active={result[5]:.4f} | "
                 f"width={result[6]:.4f} | "
                 f"largest={result[7]:.4f} | "
-                f"zero={result[8]:.2f}%",
+                f"zero={result[8]:.2f}% | "
+                f"one={result[9]:.2f}% | "
+                f"two={result[10]:.2f}%",
                 flush=True
             )
 

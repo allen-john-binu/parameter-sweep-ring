@@ -8,15 +8,15 @@ import numpy as np
 # =============================================================================
 
 INPUT_CSV = "./dataSymmetry.csv"
-SEEDS_FILE = "./ztParameterStudySample3/seeds.txt"
-OUTPUT_CSV = "./ztParameterStudySample3/spin_history2.csv"
+SEEDS_FILE = "./ztParameterStudy4/seeds.txt"
+OUTPUT_CSV = "./ztParameterStudy4/spin_history_rank0.csv"
 
 DB_THRESHOLD = 80.0
 
 # Chosen parameter set from parameter study
-NORMALIZING_FACTOR = 0.1546   # <-- change
-H_B = 0.0122             # <-- change
-V = 0.3                     # <-- change
+NORMALIZING_FACTOR = 0.410  # <-- change  
+H_B = 0.020            # <-- change
+V = 0.4                    # <-- change
 BETA = 400                  # <-- change
 
 NS = 120

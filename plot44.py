@@ -24,6 +24,10 @@ METRICS = [
         "Average Bump Width",
     ),
     (
+        "avg_bumpangle",
+        "Average Bump Angle",
+    ),
+    (
         "avg_zero_bump_timestep_percentage",
         "Average Zero-Bump Timesteps (%)",
     ),
@@ -37,6 +41,7 @@ REQUIRED_COLUMNS = [
     "avg_number_of_bumps",
     "avg_total_active_neurons",
     "avg_bump_width",
+    "avg_bumpangle",
     "avg_zero_bump_timestep_percentage",
 ]
 
@@ -322,7 +327,7 @@ def plot_single_parameter_pair(
     # Plot 5: Exact zero-bump parameter combinations
     # -------------------------------------------------------------------------
 
-    ax = axes[4]
+    ax = axes[5]
 
     zero_map = subset.pivot_table(
         index="h_b",
@@ -433,6 +438,21 @@ def plot_all_parameter_pairs(
 
     df = pd.read_csv(
         csv_path
+    )
+    
+    # Average bump angle over all recorded timesteps
+    bumpangle_columns = [
+        c for c in df.columns
+        if c.startswith("time") and c.endswith("_bumpangle")
+    ]
+
+    if not bumpangle_columns:
+        raise ValueError("No time*_bumpangle columns found in CSV.")
+
+    df["avg_bumpangle"] = (
+        df[bumpangle_columns]
+        .apply(pd.to_numeric, errors="coerce")
+        .mean(axis=1)
     )
 
     # -------------------------------------------------------------------------
