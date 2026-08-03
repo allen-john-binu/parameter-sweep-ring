@@ -42,7 +42,7 @@ H_B_VALUES = np.arange(0.2000, 0.0000, -0.005).tolist()
 
 # 0.0122
 
-V_VALUES = [0.5]
+V_VALUES = [0.4]
 
 BETA_VALUES = [400]
 
