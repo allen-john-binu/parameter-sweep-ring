@@ -38,7 +38,7 @@ NORMALIZING_FACTORS = np.arange(0.03000, 0.00000, -0.0005).tolist()
 
 # 0.1546
 
-H_B_VALUES = np.arange(0.01500, 0.00000, -0.0005).tolist()
+H_B_VALUES = np.arange(0.03000, 0.00000, -0.0005).tolist()
 
 # 0.0122
 
