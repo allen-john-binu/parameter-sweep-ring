@@ -34,11 +34,11 @@ UPDATES_PER_STEP = NS * 4
 # H_B_VALUES = np.arange(0.5000, 0.0000, -0.05).tolist()
 
 # Full parameter sweep
-NORMALIZING_FACTORS = np.arange(0.5000, 0.0000, -0.005).tolist()
+NORMALIZING_FACTORS = np.arange(0.03000, 0.00000, -0.0005).tolist()
 
 # 0.1546
 
-H_B_VALUES = np.arange(0.2000, 0.0000, -0.005).tolist()
+H_B_VALUES = np.arange(0.01500, 0.00000, -0.0005).tolist()
 
 # 0.0122
 
