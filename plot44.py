@@ -31,6 +31,10 @@ METRICS = [
         "avg_zero_bump_timestep_percentage",
         "Average Zero-Bump Timesteps (%)",
     ),
+    (
+        "avg_one_bump_timestep_percentage",
+        "Average One-Bump Timesteps (%)",
+    ),
 ]
 
 REQUIRED_COLUMNS = [
@@ -43,6 +47,7 @@ REQUIRED_COLUMNS = [
     "avg_bump_width",
     "avg_bumpangle",
     "avg_zero_bump_timestep_percentage",
+    "avg_one_bump_timestep_percentage",
 ]
 
 
@@ -188,9 +193,9 @@ def plot_single_parameter_pair(
     n_metrics = len(METRICS)
 
     fig, axes = plt.subplots(
-        3,
         2,
-        figsize=(16, 18),
+        4,
+        figsize=(24, 12),
         constrained_layout=True,
     )
 
@@ -373,6 +378,57 @@ def plot_single_parameter_pair(
     ax.set_ylabel("h_b")
     ax.set_title(
         "Exact 0% Zero-Bump Timesteps",
+        fontsize=14,
+        fontweight="bold",
+    )
+    
+    # -------------------------------------------------------------------------
+    # Plot 8: Parameter combinations with >=99% one-bump timesteps
+    # -------------------------------------------------------------------------
+
+    ax = axes[7]
+
+    one_map = subset.pivot_table(
+        index="h_b",
+        columns="normalizing_factor",
+        values="avg_one_bump_timestep_percentage",
+        aggfunc="mean",
+    )
+
+    one_map = one_map.sort_index().sort_index(axis=1)
+
+    x_values = one_map.columns.to_numpy()
+    y_values = one_map.index.to_numpy()
+
+    mask = one_map.to_numpy(dtype=float) >= 99.0
+
+    rows, cols = np.where(mask)
+
+    ax.imshow(
+        np.zeros_like(mask, dtype=float),
+        origin="lower",
+        aspect="auto",
+        cmap="Greys",
+        vmin=0,
+        vmax=1,
+    )
+
+    ax.scatter(
+        cols,
+        rows,
+        color="red",
+        s=120,
+        marker="o",
+        edgecolors="black",
+        linewidths=0.8,
+    )
+
+    set_sparse_ticks(ax, x_values, y_values)
+
+    ax.set_xlabel("NORMALIZING_FACTOR")
+    ax.set_ylabel("h_b")
+    ax.set_title(
+        "≥99% One-Bump Timesteps",
         fontsize=14,
         fontweight="bold",
     )
